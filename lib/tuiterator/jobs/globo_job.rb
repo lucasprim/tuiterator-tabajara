@@ -5,6 +5,7 @@ module Tuiterator
       attr_reader :headline, :new_headline, :headline_xpath, :globo_url
 
       def initialize
+        @headline = ""
         @headline_xpath = \
           '//*[@id="bloco-principal"]/div[1]/div[1]/div[1]/div/a/div/h2'
         @globo_url = 'http://www.globo.com'
@@ -23,7 +24,7 @@ module Tuiterator
           # This happens not for the request above but for the
           # previous one. That's because the request above is asynchronous
           # and will not have returned so far.
-          if new_headline != headline
+          if new_headline != headline && new_headline.to_s != ""
             @headline = new_headline
             BaseJob.broker.push("Globo.com: #{new_headline}")
           end
@@ -36,7 +37,7 @@ module Tuiterator
         http.errback { puts "[GloboJob] Failed to fetch headline!" }
         http.callback do
           document = Nokogiri::XML http.response
-          @new_headline = document.search(headline_xpath).text
+          @new_headline = document.search(headline_xpath).text.chomp
         end
       end
     end
