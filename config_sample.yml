@@ -1,0 +1,11 @@
+---
+
+twitter:
+  consumer_key: aaa
+  consumer_secret: bbb
+  oauth_token: ccc
+  oauth_token_secret: ddd
+
+keywords:
+  - tdc
+  - floripa
