@@ -8,7 +8,7 @@ module Tuiterator
 
           EM.add_periodic_timer(1) do
             while message = BaseJob.broker.pop
-              ws.send message
+              ws.send message.to_json
             end
           end
 

@@ -18,7 +18,11 @@ module Tuiterator
 
         # Use 'track' to track a list of single-word keywords
         TweetStream::Client.new.track(*keywords) do |status|
-          BaseJob.broker.push ("" + status.text).force_encoding("utf-8")
+          user_picture = status.user.profile_image_uri(:original).to_s
+          BaseJob.broker.push(
+            text: ("" + status.text).force_encoding("utf-8"),
+            image: user_picture
+          )
         end
       end
     end
